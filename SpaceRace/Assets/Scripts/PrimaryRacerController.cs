@@ -3,94 +3,57 @@ using System.Collections;
 
 public class PrimaryRacerController : MonoBehaviour {
 	public GameObject spaceship;
-	public float speed = 20.0f;
-	public float acceleration = 0.0f; 
-	public int speedStat = 4;
-	public int accelStat = 4;
+	public GameObject bullet;
+	public GameObject bulletPoint;
+	public float acceleration;
+	public float maxSpeed;
+	private float currentSpeed;
+
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("PlanePilot Script has been added to " + gameObject.name);
 	
 	}
-	
+
+	// display the players stats
+	void OnGUI(){
+		GUI.Label(new Rect(20,40,80,20), currentSpeed + " m/s");
+	}
+
 	// Update is called once per frame
-	void Update () {
-		transform.position += transform.forward * Time.deltaTime * speed;
+	void FixedUpdate () {
 
-		//determines acceleration based on acceleration stat
-		switch(accelStat)
-		{
-			case 1:
-				acceleration = 0.064f;
-			break;
-			case 2:
-				acceleration = 0.067f;
-			break;
-			case 3:
-				acceleration = 0.07f;
-			break;
-			case 4:
-				acceleration = 0.075f;
-			break;
+		// set the current speed
+		currentSpeed = transform.rigidbody.velocity.magnitude;
+
+		// when the w key is pressed add force
+		if (Input.GetKey (KeyCode.W) && (transform.rigidbody.velocity.magnitude != maxSpeed)) {
+			transform.rigidbody.AddForce (transform.forward * acceleration);
 		}
 
-		//when "Accelerate" is pressed, the spacecraft will increase until it reaches max speed
-		if (Input.GetAxis("Accelerate")> 0.001)
-			{
-						speed += acceleration;
-			} else if (Input.GetAxis("Accelerate") == 0)			//when it is released it should return back to normal speed
-				{
-					if(speed > 20.0f)
-					{	
-						speed -= 0.5f;
-					}
-			}
-		//determines max speed based on speed stat
-		switch (speedStat) 
-		{
-			case 1: if(speed > 40.0f)
-				speed = 40.0f;
-			break;
-			case 2: if(speed > 42.0f)
-				speed = 42.0f;
-			break;
-			case 3: if(speed > 40.0f)
-				speed = 44.0f;
-			break;
-			case 4: if(speed > 46.0f)
-				speed = 46.0f;
-			break;
+		// same for the s key but the opposite direction
+		if (Input.GetKey (KeyCode.S) && (transform.rigidbody.velocity.magnitude != maxSpeed)) {
+			transform.rigidbody.AddForce (transform.forward *(-1)*acceleration);
 		}
 
-		// mouse direction
-		float mouseX = Input.GetAxis ("Mouse X");
-		float mouseY = Input.GetAxis ("Mouse Y");
-		float shipRotate = mouseX;
-		float turntime;
+		// turn the spaceship
+		transform.Rotate(Vector3.up, Input.GetAxis("Horizontal")*60*Time.deltaTime);
 
-		if (shipRotate > 30)
-		{
-			shipRotate = 30;
+		// rotate the space ship
+		transform.rotation = Quaternion.Slerp(transform.rotation , Quaternion.Euler(0.0f,transform.rotation.eulerAngles.y,-Input.GetAxis("Horizontal")*30), 10*Time.deltaTime);
+
+		if(Input.GetKeyDown(KeyCode.Space)){
+			shootBullet ();
 		}
-		if (shipRotate < -30)
-		{
-			shipRotate = -30;
-		}
+	}
 
-		// amplify the mouse movement
-		float amp = -4;
-		transform.Rotate (0.0f, -(amp * mouseX), 0.0f);
-		spaceship.transform.Rotate (0.0f, 0.0f ,-shipRotate);
+	void shootBullet(){
+		// create a bullet object
+		GameObject b;
+		b = (GameObject)Instantiate (bullet, bulletPoint.transform.position, transform.rotation);
 
-
-		/*
-		//Launch Button
-		if (Input.GetButton("Accelerate"))
-		{
-			speed += acceleration;
-		} else if (Input.GetAxis ("Accelerate") == 0)
-		*/
-			
+		// add a force in the forward direction to the bullet
+		b.rigidbody.velocity = transform.rigidbody.velocity;
+		b.rigidbody.AddForce (b.transform.forward * 3000);
 	}
 }
 

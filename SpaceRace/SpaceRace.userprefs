@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PrimaryRacerController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/BulletController.cs">
     <Files>
-      <File FileName="Assets\Scripts\PrimaryRacerController.cs" Line="70" Column="3" />
+      <File FileName="Assets/Scripts/PrimaryRacerController.cs" Line="48" Column="1" />
+      <File FileName="Assets/BulletController.cs" Line="6" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
