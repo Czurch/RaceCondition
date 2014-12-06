@@ -40,7 +40,7 @@ function LateUpdate () {
 
 	// Damp the height
 	currentHeight = Mathf.Lerp (currentHeight, wantedHeight, heightDamping * Time.deltaTime);
-
+	
 	// Convert the angle into a rotation
 	var currentRotation = Quaternion.Euler (0, currentRotationAngle, 0);
 	
@@ -51,7 +51,7 @@ function LateUpdate () {
 
 	// Set the height of the camera
 	transform.position.y = currentHeight;
-	
+		
 	// Always look at the target
 	transform.LookAt (target);
 }
